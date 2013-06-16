@@ -8,6 +8,9 @@ Utilities for using Beanstalk with Flask
 Client
 ------
 
+``flask_beanstalk.Beanstalk`` is a simple wrapper for ``beanstalkc.Connection``
+that allows reading configuration from ``app.config``.
+
 ::
 
   from flask import Flask
@@ -30,6 +33,10 @@ Configuration
 Worker
 ------
 
+Define and spawn workers by subclassing from ``flask_beanstalk.Worker``.
+``flask_beanstalk.Worker`` inherits from ``gevent.Greenlet`` but ``gevent``
+is an optional dependency in case you just want to use the client.
+
 ::
 
   import gevent
@@ -51,7 +58,7 @@ Worker
 Try it out
 ----------
 
-Install and run beanstalkd if you haven't done so yet.
+Install and run ``beanstalkd`` if you haven't done so yet.
 
 ::
 
