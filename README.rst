@@ -54,6 +54,7 @@ Try it out
 Install and run beanstalkd if you haven't done so yet.
 
 ::
+
   git clone https://github.com/marksteve/flask-beanstalk.git
   cd flask-beanstalk
   mkvirtualenv flask-beanstalk
