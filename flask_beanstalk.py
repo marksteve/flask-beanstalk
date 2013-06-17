@@ -35,15 +35,15 @@ if has_gevent:
 
   class Worker(Greenlet):
 
-    def __init__(self, id, tubes=(), job_timeout=60, job_max_retries=5,
-                 logger=None, **kwargs):
+    def __init__(self, id, tubes=(), job_timeout=60, job_max_releases=0,
+                 job_max_kicks=0, logger=None, **kwargs):
       Greenlet.__init__(self)
       self.id = id
       self._beanstalk = beanstalkc.Connection(**kwargs)
       for tube in tubes:
         self._beanstalk.watch(tube)
       self._job_timeout = job_timeout
-      self._job_max_retries = job_max_retries
+      self._job_max_releases = job_max_releases
       if not logger:
         logger = logging.getLogger(repr(self))
         logger.setLevel(logging.DEBUG)
@@ -75,7 +75,19 @@ if has_gevent:
         self.state = RESERVING
         job = self._beanstalk.reserve()
         self.state = WORKING
-        self.work(job)
+        job_stats = job.stats()
+        if (
+          self._job_max_releases > 0 and
+          job_stats['releases'] >= self._job_max_releases
+        ):
+          job.bury()
+        elif (
+          self._job_max_releases > 0 and
+          job_stats['kicks'] >= self._job_max_kicks
+        ):
+          job.delete()
+        else:
+          self.work(job)
         if self._stop_evt.is_set():
           break
 
