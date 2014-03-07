@@ -2,6 +2,8 @@
 Flask-Beanstalk
 ===============
 
+.. image:: http://img.shields.io/pypi/v/Flask-Beanstalk.png
+
 Utilities for using Beanstalk with Flask
 
 ------
