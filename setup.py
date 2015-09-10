@@ -6,7 +6,7 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 if __name__ == '__main__':
   setup(
     name='Flask-Beanstalk',
-    version='0.0.1',
+    version='0.0.2',
     url='https://github.com/marksteve/flask-beanstalk',
     license='MIT',
     author='Mark Steve Samson',
@@ -16,5 +16,7 @@ if __name__ == '__main__':
     py_modules=['flask_beanstalk'],
     zip_safe=False,
     platforms='any',
-    install_requires=open(os.path.join(current_dir, 'requirements.txt')).readlines(),
+    install_requires=open(
+      os.path.join(current_dir, 'requirements.txt'),
+    ).readlines(),
   )
